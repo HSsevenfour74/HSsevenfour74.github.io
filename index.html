@@ -2,32 +2,592 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>ConceptGames</title>
-        <link rel="icon" type="image/png" href="icon.png" sizes="64x64">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConceptGames 概念游戏</title>
+        <link rel="icon" type="image/png" href="icon.png" sizes="32x32">
     <style>
-        p{
-            color:black;
-            size: 12px;
+        :root {
+            --primary: #f41808;
+            --primary-dark: #0d5cb6;
+            --secondary: #0f9d58;
+            --dark: #202124;
+            --light: #f8f9fa;
+            --gray: #ffffff;
+            --border: #061533;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: scroll;
+            background-position: center center;
+             background-color: rgba(255, 255, 255, 0.7);
+            background-blend-mode: overlay;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        /* 导航栏样式 */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgb(0, 0, 0);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 40px; /* 固定logo图片高度 */
+            width: auto; /* 自动保持宽高比 */
+            object-fit: contain; /* 保持图片比例 */
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: var(--gray);
+        }
+        
+        /* Logo文字标题：字体大小24px，加粗 */
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color:  var(--primary);
+        }
+
+        .logo span1
+        {
+            color:  var(--gray);
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin: 0 15px;
+        }
+        
+        nav ul li a {
+            font-weight: 500;
+            padding: 8px 0;
+            position: relative;
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-btns {
+            display: flex;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+        
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            margin-right: 10px;
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .mobile-toggle {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .section {
+            padding: 100px 0;
+            margin-top: 80px;
+        }
+        
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px;
+        }
+        
+        .section-title {
+            font-size: 36px;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+        
+        .section-subtitle {
+            color: var(--dark);
+            font-size: 18px;
+        }
+        
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+         .service-img {
+            height: 40px; /* 固定logo图片高度 */
+            width: auto; /* 自动保持宽高比 */
+            object-fit: contain; /* 保持图片比例 */
+        }
+        
+        .service-icon i {
+            font-size: 28px;
+            color: white;
+        }
+        
+        .service-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        /* 页脚样式 */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 70px 0 20px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .footer-col h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #bdc1c6;
+            transition: all 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .footer-contact p {
+            margin-bottom: 10px;
+            color: #bdc1c6;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .footer-contact i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #bdc1c6;
+            font-size: 14px;
+        }
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .hero h2 {
+                font-size: 40px;
+            }
+            
+            .hero-image {
+                max-width: 45%;
+            }
+            
+            .about-content {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: block;
+            }
+            
+            nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                padding: 20px;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                transition: all 0.4s ease;
+            }
+            
+            nav.active {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav ul li {
+                margin: 10px 0;
+            }
+            
+            .hero {
+                text-align: center;
+            }
+            
+            .hero-btns {
+                justify-content: center;
+            }
+            
+            .hero-image {
+                display: none;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h2 {
+                font-size: 32px;
+            }
+            
+            .hero-btns {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .section-subtitle {
+                font-size: 16px;
+            }
+            
+            .logo h1 {
+                font-size: 20px; /* 移动端缩小标题文字 */
+            }
+            
+            .logo img {
+                height: 32px; /* 移动端缩小logo图片 */
+            }
         }
     </style>
 </head>
-<body>
-    <div class="nav">
-    <h1>Concept Games</h1>
-    </div>
 
-    <div class="content">
-    <h2>Concept Line : Orion</h2>
-    <h3><b><a href="https://github.com/HSsevenfour74/Concept-Line/releases/tag/Public" target="_blank">GitHub下载</a></b></h3>
-    <h3><b>QQ群下载</b></h3>
-    <h4><b><a href="https://qm.qq.com/q/CcLBmG9LNe" target="_blank">一群</a></b></h4>
-    <h4><b><a href="https://qm.qq.com/q/1cQa6neC2K" target="_blank">二群</a></b></h4>
-    <h4><b><a href="https://pd.qq.com/s/he519d4e1" target="_blank">频道</a></b></h4>
-    <h3><b><a href="https://chinadlrs.com/app/56" target="_blank">同人群应用中心</a></b></h3>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="icon.png" alt="网站Logo">
+                <h1><span1>概念游戏 </span1><span>Concept Games</span></h1>
+            </div>
+            
+            <div class="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="logo">
+            <nav>
+                <ul>
+                    <li><a href=""><span1>概念线</span1></a></li>
+                    <li><a href=""><span1>游戏公告</span1></a></li>
+                    <li><a href="https://docs.qq.com/sheet/DUU5CaHdjUVF3c09V"><span1>Bug反馈</span1></a></li>
+                </ul>
+            </nav>
+            </div>
+        </div>
+    </header>
+
+     <section class="section" id="services">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Concept Line : Orion</h2>
+                <p class="section-subtitle">概念线</p>
+            </div>
+            
+            <div class="services">
+                <div class="service-card">
+                    <div class="service-icon">
+                       
+                    </div>
+                    <h3>GitHub下载</h3>
+                    <p><a href="https://github.com/HSsevenfour74/Concept-Line/releases/tag/Public" target="_blank">点击下载</a></p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        
+                    </div>
+                    <h3>QQ①群</h3>
+                     <p><a href="https://qm.qq.com/q/CcLBmG9LNe" target="_blank">加入群聊</a></p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        
+                    </div>
+                    <h3>QQ②群</h3>
+                    <p><a href="https://qm.qq.com/q/1cQa6neC2K" target="_blank">加入群聊</a></p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        
+                    </div>
+                    <h3>QQ频道</h3>
+                    <p><a href="https://pd.qq.com/s/he519d4e1" target="_blank">进入频道</a></p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        
+                    </div>
+                    <h3>Discord群组</h3>
+                    <p><a href="https://discord.com/invite/spnTseZeC7" target="_blank">加入</a></p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        
+                    </div>
+                    <h3>同人群应用中心</h3>
+                    <p><a href="https://chinadlrs.com/app/56" target="_blank">Chinadlrs</a></p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        
+                    </div>
+                    <h3>Bug反馈</h3>
+                    <p><a href="https://docs.qq.com/sheet/DUU5CaHdjUVF3c09V" target="_blank">提交反馈</a></p>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+    
     </div>
-    <div>
-        <hr>
-        <h3>Copyright © 2025 Concept Games All Rights Reserved.</h3>
-    </div>
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo">
+                        <i class="fas fa-rocket"></i>
+                        <h3>Concept Games</h3>
+                    </div>
+                    <p style="margin-top: 20px; color: #bdc1c6;"></p>
+                    <div class="social-links" style="margin-top: 20px; justify-content: flex-start;">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>友情链接</h3>
+                    <ul class="footer-links">
+                        <li><a href="https://chinadlrs.com" target="_blank">同人群官网</a></li>
+                        <li><a href="https://dlfm-wiki.top" target="_blank">跳舞的线饭制Wiki</a></li>
+                        <li><a href="https://mtponline.linecom.net.cn/intro" target="_blank">共舞的线 DLMTP</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>联系我们</h3>
+                   <ul class="footer-links">
+                        <li><a href="#" target="_blank">xucumyu233@gmail.com</a></li>
+                        <li><a href="https://space.bilibili.com/272917035" target="_blank">bilibili</a></li>
+                        <li><a href="https://www.youtube.com/@hssevenfour74" target="_blank">YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; Copyright 2025 Concept Games All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 移动端菜单切换
+        const mobileToggle = document.querySelector('.mobile-toggle');
+        const nav = document.querySelector('nav');
+        
+        mobileToggle.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+        
+        // 滚动时导航栏样式变化
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
+                header.style.padding = '0';
+            } else {
+                header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+            }
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                nav.classList.remove('active');
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+         // 4. 新增：随机背景图片逻辑
+        function setRandomBackground() {
+            // 定义背景图片列表（路径对应你存放的图片，可自行添加/删除）
+            const bgImages = [
+                'images/bg1.png',
+                'images/bg2.png',
+                'images/bg3.png',
+                'images/bg4.png'
+                // 可以继续添加：'images/bg4.png', 'images/bg5.webp'
+            ];
+            // 随机生成一个索引（0 到 图片数量-1）
+            const randomIndex = Math.floor(Math.random() * bgImages.length);
+            // 随机选择一张图片
+            const randomImage = bgImages[randomIndex];
+            // 设置body的背景图片
+            document.body.style.backgroundImage = `url('${randomImage}')`;
+        }
+
+        // 页面加载时执行，设置随机背景
+        window.onload = setRandomBackground;
+    </script>
 </body>
+
 </html>
